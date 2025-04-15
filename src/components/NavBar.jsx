@@ -5,10 +5,13 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCartItems } from '../features/cart/cartSlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useAuth } from '../contexts/AuthContext';
+import Logout from './Auth/Logout';
 
 function NavigationBar() {
   const cartItems = useSelector(selectCartItems);
   const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+  const { currentUser } = useAuth();
 
   return (
     <Navbar expand="lg" className="navbar-custom mb-4">
@@ -24,6 +27,11 @@ function NavigationBar() {
                 </span>
               )}
             </NavLink>
+            {currentUser ? (
+              <Logout />
+            ) : (
+              <NavLink className="nav-link-custom" to="/login">Login</NavLink>
+            )}
       </Container>
     </Navbar>
   );

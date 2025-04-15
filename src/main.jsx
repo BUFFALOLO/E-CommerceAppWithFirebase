@@ -7,6 +7,7 @@ import { store } from './app/store'
 import App from './App.jsx'
 import './index.css'
 import './components/styles.css'
+import { AuthProvider } from './contexts/AuthContext'
 
 const queryClient = new QueryClient()
 
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Provider store={store}>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </Provider>
       </BrowserRouter>
     </QueryClientProvider>

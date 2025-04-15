@@ -14,6 +14,7 @@ import CustomerDetails from "./components/CustomerDetails";
 import { Route, Routes } from "react-router-dom";
 import CustomersAndAccountsMenu from "./components/CustomersAndAccountsMenu";
 import ShoppingCart from "./components/ShoppingCart";
+import Login from "./components/Auth/Login";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/ListAllProducts" element={<ListAllProducts/>}/>
         <Route path="/CustomerDetails/:id" element={<CustomerDetails />}/>
         <Route path="/cart" element={<ShoppingCart />}/>
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />}/>
       </Routes>
     </>
