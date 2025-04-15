@@ -7,6 +7,7 @@ import { selectCartItems } from '../features/cart/cartSlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAuth } from '../contexts/AuthContext';
 import Logout from './Auth/Logout';
+import Login from './Auth/Login';
 
 function NavigationBar() {
   const cartItems = useSelector(selectCartItems);
