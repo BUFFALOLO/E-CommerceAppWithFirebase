@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
@@ -29,5 +29,10 @@ function CategoryDropdown({ selectedCategory, onCategoryChange }) {
         </Form.Select>
     );
 }
+
+CategoryDropdown.propTypes = {
+    selectedCategory: PropTypes.string,
+    onCategoryChange: PropTypes.func.isRequired,
+};
 
 export default CategoryDropdown;

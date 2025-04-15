@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity, clearCart } from '../features/cart/cartSlice';
-import { Card, Container, Button, Table, Badge, Form, Alert } from 'react-bootstrap';
+import { Container, Button, Table, Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function ShoppingCart() {

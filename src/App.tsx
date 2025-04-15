@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "./firebase";
+import React from "react";
 import Register from "./components/Register";
 import Login from "./components/Auth/Login";
+import Logout from "./components/Auth/Logout";
+import { useAuth, AuthProvider } from "./contexts/AuthContext";
 
-const App = () => {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+const AppContent = () => {
+  const { currentUser } = useAuth();
 
   return (
     <div>
-      {user ? (
+      {currentUser ? (
         <div>
-          <h2>Welcome, {user.email}</h2>
-          <Login /> {/* To provide a logout button */}
+          <h2>Welcome, {currentUser.email}</h2>
+          <Logout />
         </div>
       ) : (
         <>
@@ -28,6 +21,14 @@ const App = () => {
         </>
       )}
     </div>
+  );
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 

@@ -16,7 +16,7 @@ function UpdateProductForm() {
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     category: "electronics"
   });
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 

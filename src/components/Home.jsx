@@ -7,6 +7,7 @@ import { Card, Container, Row, Col, Spinner, Alert, Button, Badge } from 'react-
 import { useDispatch } from 'react-redux';
 import { addItem } from '../features/cart/cartSlice';
 import CategoryDropdown from './CategoryDropdown';
+import Register from './Register';
 
 function Home() {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function Home() {
     }
 
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [showRegister, setShowRegister] = useState(false);
 
     const { data: products, isLoading, error } = useQuery({
         queryKey: ['products', selectedCategory],
@@ -39,6 +41,17 @@ function Home() {
         <div style={divStyles}>
             <h1 className="my-5 display-3">Mini Project: E-Commerce API</h1>
             <p className="lead">Completed by Lauren Farrell</p>
+
+            <Button 
+                variant="success" 
+                className="mb-3"
+                onClick={() => setShowRegister(!showRegister)}
+            >
+                {showRegister ? 'Hide Register' : 'Register'}
+            </Button>
+
+            {showRegister && <Register />}
+
             <img 
                 src="/src/assets/photo.jpg" 
                 alt="E-Commerce Illustration" 
