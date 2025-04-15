@@ -19,7 +19,7 @@ function Home() {
     }
 
     const imgStyles = {
-        maxWidth: '60%',
+        maxWidth: '30%',
         height: 'auto',
         marginTop: '2rem',
         borderRadius: '8px'
@@ -32,7 +32,8 @@ function Home() {
         let q;
         const productsCollection = collection(db, 'products');
         if (selectedCategory) {
-            q = query(productsCollection, where('category', '==', selectedCategory));
+            // Normalize category to lowercase for comparison
+            q = query(productsCollection, where('category', '==', selectedCategory.toLowerCase()));
         } else {
             q = query(productsCollection);
         }
@@ -55,20 +56,21 @@ function Home() {
             <h1 className="my-5 display-3">Mini Project: E-Commerce API</h1>
             <p className="lead">Completed by Lauren Farrell</p>
 
-            <Button 
-                variant="success" 
-                className="mb-3 me-2"
-                onClick={() => setShowRegister(!showRegister)}
-            >
-                {showRegister ? 'Hide Register' : 'Register'}
-            </Button>
-            <NavLink 
-                to="/login" 
-                className="btn btn-primary mb-3"
-                style={{ height: '38px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-                Login
-            </NavLink>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                <Button 
+                    variant="success" 
+                    onClick={() => setShowRegister(!showRegister)}
+                >
+                    {showRegister ? 'Hide Register' : 'Register'}
+                </Button>
+                <NavLink 
+                    to="/login" 
+                    className="btn btn-primary"
+                    style={{ height: '38px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                    Login
+                </NavLink>
+            </div>
 
             {showRegister && <Register />}
 
@@ -93,7 +95,7 @@ function Home() {
                                 <Card className="h-100">
                                     <Card.Img 
                                         variant="top" 
-                                        src={product.image} 
+                                        src={product.imageURL} 
                                         style={{ height: '200px', objectFit: 'contain' }} 
                                     />
                                     <Card.Body className="d-flex flex-column">
@@ -105,9 +107,6 @@ function Home() {
                                             {product.description}
                                         </Card.Text>
                                         <div className="d-flex justify-content-between align-items-center">
-                                            <Badge bg="warning" text="dark">
-                                                Rating: {product.rating?.rate || 'N/A'}
-                                            </Badge>
                                             <h5>${product.price}</h5>
                                         </div>
                                         <Button 

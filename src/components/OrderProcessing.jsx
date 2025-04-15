@@ -2,49 +2,59 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useAuth } from '../contexts/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCartItems, selectCartTotal, clearCart } from '../features/cart/cartSlice';
+import { db } from '../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 function OrderProcessing() {
   const [validated, setValidated] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const { currentUser } = useAuth();
+  const cartItems = useSelector(selectCartItems);
+  const cartTotal = useSelector(selectCartTotal);
+  const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setValidated(true);
+    setError('');
+    setSuccess('');
+
+    if (!currentUser) {
+      setError('You must be logged in to place an order.');
+      return;
     }
 
-    setValidated(true);
+    if (cartItems.length === 0) {
+      setError('Your cart is empty.');
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, 'orders'), {
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        items: cartItems,
+        total: cartTotal,
+        createdAt: serverTimestamp(),
+      });
+      dispatch(clearCart());
+      setSuccess('Order placed successfully!');
+      setValidated(false);
+    } catch (err) {
+      console.error('Error placing order:', err);
+      setError('Failed to place order. Please try again.');
+    }
   };
 
   return (
     <Form className="mx-5" noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group className="mb-4" md="4" controlId="validationCustom01">
-          <Form.Label>Customer Name</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            placeholder="Enter the name of the customer placing the order"
-          />
-        <Form.Control.Feedback type="invalid">
-            Please provide a valid customer name.
-        </Form.Control.Feedback>
-        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-4" md="4" controlId="validationCustom02">
-        <Form.Label>Product</Form.Label>
-        <Form.Control
-        required
-        type="text"
-        placeholder="Enter the name of the product you wish to order"
-        />
-        <Form.Control.Feedback type="invalid">
-            Please provide a valid product name.
-        </Form.Control.Feedback>
-          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-        </Form.Group>
-
-        <Button type="submit">Place Order</Button>
+      {error && <div className="alert alert-danger">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
+      <Button type="submit">Place Order</Button>
     </Form>
   );
 }

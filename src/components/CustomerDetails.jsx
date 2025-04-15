@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,7 +13,7 @@ function CustomerDetails() {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/users/${id}`);
+        const response = await axios.get(`/users/${id}`);
 
         setCustomer(response.data);
         setError('');

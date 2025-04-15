@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UpdateCustomerForm() {
@@ -58,7 +57,7 @@ function UpdateCustomerForm() {
 
   const UpdateCustomer = async () => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/users/${id}`, newCustomer);
+      const response = await axios.put(`/users/${id}`, newCustomer);
       setNewCustomer({
         email: "",
         username: "",

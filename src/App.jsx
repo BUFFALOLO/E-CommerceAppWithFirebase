@@ -2,6 +2,7 @@ import Home from "./components/Home";
 import NavigationBar from "./components/NavBar";
 import ProductsMenu from "./components/ProductsMenu";
 import OrderProcessing from "./components/OrderProcessing";
+import OrderHistory from "./components/OrderHistory";
 import CustomerForm from "./components/CreateCustomerForm";
 import UpdateCustomerForm from "./components/UpdateCustomerForm";
 import ListAllCustomers from "./components/ListAllCustomers";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/ProductsMenu/" element={<ProductsMenu />}/>
         <Route path="/OrderProcessing" element={<OrderProcessing />}/>
+        <Route path="/order-history" element={<OrderHistory />} />
         <Route path="/CustomersAndAccountsMenu/" element={<CustomersAndAccountsMenu />}/>
         <Route path="/CreateCustomerForm" element={<CustomerForm />}/>
         <Route path="/UpdateCustomerForm/:id" element={<UpdateCustomerForm />}/>
