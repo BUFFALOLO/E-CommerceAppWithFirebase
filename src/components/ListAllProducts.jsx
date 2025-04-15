@@ -1,52 +1,52 @@
-import React from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config";
-import { useEffect } from "react";
-import { useState } from "react";
+import { db } from "../firebase";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 function ListAllProducts() {
-    const [products, setProducts] = useState([]);
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-    const fetchProducts = async () => {
-        try {
-          const response = await axios.get(`${API_BASE_URL}/products`);
-          console.log(response.data);
-          setProducts(response.data);
-          setError("");
-        } catch (error) {
-          console.error("Error listing products:", error);
-          setError("Error listing products. Please try again.");
-          setSuccess("");
-        } finally {
-          setLoading(false);
-        }
-      };
+  const fetchProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      const productsList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setProducts(productsList);
+      setError("");
+    } catch (error) {
+      console.error("Error listing products:", error);
+      setError("Error listing products. Please try again.");
+      setSuccess("");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const deleteProduct = async (id) => {
-      try {
-        await axios.delete(`${API_BASE_URL}/products/${id}`);
-        fetchProducts();
-      } catch (error) {
-        console.error("Error deleting product:", error);
-        setError("Error deleting product. Please try again.");
-      }
-    };
-    
-    useEffect(() => {
+  const deleteProduct = async (id) => {
+    try {
+      await deleteDoc(doc(db, "products", id));
       fetchProducts();
-    } , []);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      setError("Error deleting product. Please try again.");
+    }
+  };
 
-    if (loading) { return <p>Loading products...</p>; }
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    return (
-      <div>
-      { error && <p>{error}</p> }
-      { success && <p>{success}</p> }
+  if (loading) {
+    return <p>Loading products...</p>;
+  }
+
+  return (
+    <div>
+      {error && <p>{error}</p>}
+      {success && <p>{success}</p>}
       <h1>All Products</h1>
       <table>
         <thead>
@@ -70,7 +70,7 @@ function ListAllProducts() {
         </tbody>
       </table>
     </div>
-  )
+  );
 }
 
 export default ListAllProducts;

@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity, clearCart } from '../features/cart/cartSlice';
 import { Container, Button, Table, Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 function ShoppingCart() {
   const dispatch = useDispatch();
@@ -14,7 +17,10 @@ function ShoppingCart() {
     state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
   );
 
+  const { currentUser, userProfile } = useAuth();
+
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(null);
 
   const handleRemove = (id) => {
     dispatch(removeItem(id));
@@ -26,10 +32,45 @@ function ShoppingCart() {
     }
   };
 
-  const handleCheckout = () => {
-    dispatch(clearCart());
-    sessionStorage.removeItem('cart');
-    setCheckoutSuccess(true);
+  const createOrder = async () => {
+    if (!currentUser) {
+      throw new Error('User must be logged in to place an order.');
+    }
+    if (items.length === 0) {
+      throw new Error('Cart is empty.');
+    }
+
+    const order = {
+      userId: currentUser.uid,
+      userEmail: currentUser.email,
+      userProfile: userProfile || {},
+      products: items.map(item => ({
+        id: item.id,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      totalPrice: total,
+      totalQuantity: totalQuantity,
+      createdAt: serverTimestamp(),
+      status: 'pending',
+    };
+
+    const ordersCollection = collection(db, 'orders');
+    const docRef = await addDoc(ordersCollection, order);
+    return docRef.id;
+  };
+
+  const handleCheckout = async () => {
+    setCheckoutError(null);
+    try {
+      await createOrder();
+      dispatch(clearCart());
+      sessionStorage.removeItem('cart');
+      setCheckoutSuccess(true);
+    } catch (error) {
+      setCheckoutError(error.message);
+    }
   };
 
   return (
@@ -38,6 +79,11 @@ function ShoppingCart() {
       {checkoutSuccess && (
         <Alert variant="success" onClose={() => setCheckoutSuccess(false)} dismissible>
           Checkout successful! Your cart has been cleared.
+        </Alert>
+      )}
+      {checkoutError && (
+        <Alert variant="danger" onClose={() => setCheckoutError(null)} dismissible>
+          Error during checkout: {checkoutError}
         </Alert>
       )}
       {items.length === 0 ? (

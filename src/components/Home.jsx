@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../features/cart/cartSlice';
 import CategoryDropdown from './CategoryDropdown';
 import Register from './Register';
+import { NavLink } from 'react-router-dom';
 
 function Home() {
     const dispatch = useDispatch();
@@ -44,11 +45,18 @@ function Home() {
 
             <Button 
                 variant="success" 
-                className="mb-3"
+                className="mb-3 me-2"
                 onClick={() => setShowRegister(!showRegister)}
             >
                 {showRegister ? 'Hide Register' : 'Register'}
             </Button>
+            <NavLink 
+                to="/login" 
+                className="btn btn-primary mb-3"
+                style={{ height: '38px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+                Login
+            </NavLink>
 
             {showRegister && <Register />}
 

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { db } from '../firebase';
+import { collection, addDoc } from 'firebase/firestore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProductForm() {
@@ -14,7 +14,6 @@ function ProductForm() {
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     category: "electronics"
   });
-  // const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -43,7 +42,13 @@ function ProductForm() {
 
   const createNewProduct = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/products`, newProduct);
+      await addDoc(collection(db, "products"), {
+        title: newProduct.title,
+        price: parseFloat(newProduct.price),
+        description: newProduct.description,
+        image: newProduct.image,
+        category: newProduct.category
+      });
       setNewProduct({ 
         title: "", 
         price: "", 

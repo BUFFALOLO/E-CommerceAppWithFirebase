@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { db } from '../firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UpdateProductForm() {
   const [validated, setValidated] = useState(false);
-  const {id} = useParams();
+  const { id } = useParams();
   const [newProduct, setNewProduct] = useState({ 
     title: "", 
     price: "", 
@@ -16,9 +16,34 @@ function UpdateProductForm() {
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     category: "electronics"
   });
-  // const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setNewProduct({
+            title: data.title || "",
+            price: data.price ? data.price.toString() : "",
+            description: data.description || "",
+            image: data.image || "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+            category: data.category || "electronics"
+          });
+          setError("");
+        } else {
+          setError("Product not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setError("Error fetching product. Please try again.");
+      }
+    };
+    fetchProduct();
+  }, [id]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -40,12 +65,19 @@ function UpdateProductForm() {
       return;
     }
 
-    await UpdateProduct();
+    await updateProduct();
   };
 
-  const UpdateProduct = async () => {
+  const updateProduct = async () => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/products/${id}`, newProduct);
+      const docRef = doc(db, "products", id);
+      await updateDoc(docRef, {
+        title: newProduct.title,
+        price: parseFloat(newProduct.price),
+        description: newProduct.description,
+        image: newProduct.image,
+        category: newProduct.category
+      });
       setNewProduct({ 
         title: "", 
         price: "", 

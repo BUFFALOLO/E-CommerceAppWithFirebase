@@ -29,7 +29,7 @@ function NavigationBar() {
             {currentUser ? (
               <Logout />
             ) : (
-              <NavLink className="nav-link-custom" to="/login">Login</NavLink>
+              null
             )}
       </Container>
     </Navbar>
