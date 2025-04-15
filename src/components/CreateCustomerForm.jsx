@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function CustomerForm() {
+function CreateCustomerForm() {
   const [validated, setValidated] = useState(false);
   const [newCustomer, setNewCustomer] = useState({ 
     email: "",
@@ -27,7 +27,6 @@ function CustomerForm() {
     },
     phone: "1-570-236-7033" // Fake Store API requires phone but doesn't validate format
   });
-  // const [customers, setCustomers] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -57,7 +56,6 @@ function CustomerForm() {
   const createNewCustomer = async () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users`, newCustomer);
-      setCustomers((prev) => [...prev, response.data]);
       setNewCustomer({
         email: "",
         username: "",
@@ -200,4 +198,4 @@ function CustomerForm() {
   );
 }
 
-export default CustomerForm;
+export default CreateCustomerForm;

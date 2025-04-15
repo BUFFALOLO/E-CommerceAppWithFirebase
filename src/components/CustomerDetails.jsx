@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
@@ -37,7 +37,7 @@ function CustomerDetails() {
       <h2>Customer Details</h2>
       {customer && (
         <div>
-          <p><strong>Name:</strong> {customer.name}</p>
+          <p><strong>Name:</strong> {customer.name.firstname} {customer.name.lastname}</p>
           <p><strong>Email:</strong> {customer.email}</p>
           <p><strong>Phone:</strong> {customer.phone}</p>
         </div>

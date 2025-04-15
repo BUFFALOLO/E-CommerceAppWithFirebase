@@ -1,9 +1,7 @@
-import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ListAllCustomers() {
     const [customers, setCustomers] = useState([]);

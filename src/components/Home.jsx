@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { Card, Container, Row, Col, Spinner, Alert, Button, Badge } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../features/cart/cartSlice';
@@ -28,14 +28,26 @@ function Home() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [showRegister, setShowRegister] = useState(false);
 
+    const fetchProducts = async () => {
+        let q;
+        const productsCollection = collection(db, 'products');
+        if (selectedCategory) {
+            q = query(productsCollection, where('category', '==', selectedCategory));
+        } else {
+            q = query(productsCollection);
+        }
+        const querySnapshot = await getDocs(q);
+        const products = [];
+        querySnapshot.forEach((doc) => {
+            products.push({ id: doc.id, ...doc.data() });
+        });
+        return products;
+    };
+
     const { data: products, isLoading, error } = useQuery({
         queryKey: ['products', selectedCategory],
-        queryFn: () => {
-            const url = selectedCategory 
-                ? `${API_BASE_URL}/products/category/${selectedCategory}`
-                : `${API_BASE_URL}/products`;
-            return axios.get(url).then(res => res.data);
-        }
+        queryFn: fetchProducts,
+        keepPreviousData: true,
     });
 
     return (

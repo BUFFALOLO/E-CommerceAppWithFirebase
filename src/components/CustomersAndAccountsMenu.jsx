@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -10,6 +9,7 @@ function CustomersAndAccountsMenu() {
                 <li className="list-unstyled"><NavLink to="/CreateCustomerForm">Add Customer</NavLink></li>
                 <li className="list-unstyled"><NavLink to="/ListAllCustomers">View Customers</NavLink></li>
                 <li className="list-unstyled"><NavLink to="/CustomerDetails/1">View Customer Details</NavLink></li>
+                <li className="list-unstyled"><NavLink to="/ListAllProducts">View Products</NavLink></li>
             </ul>
         </div>
     )
