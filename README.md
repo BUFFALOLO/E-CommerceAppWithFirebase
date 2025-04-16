@@ -1,58 +1,60 @@
-# Advanced React E-Commerce Web App
+# Implement Firebase into React E-Commerce App
 
 
-To successfully build our advanced e-commerce application and achieve the learning objectives, we need to establish clear project requirements. These requirements outline the key features and functionalities that our application must encompass. Below, you'll find a comprehensive list of project requirements based on our learning objectives:
+In this assignment, you will extend your eCommerce app by integrating Firebase for product management and user orders. You'll replace the previous FakeStore API with Firestore for managing products and implement Firebase to store and manage user orders.
 
 
-Our project leverages the FakeStoreAPI to simulate asynchronous data fetching. This API, available at https://fakestoreapi.com/, provides a simulated environment for fetching product/category data. By utilizing this mock API, we can demonstrate the capabilities of the advanced topics reviewed within our Module’s Lessons.
-
-
-While both Context API and Redux Toolkit are valuable tools for state management, we'll focus on Redux for this project to deepen understanding and practice with Redux concepts.
-
-
-Additionally, we'll encourage the use of React Query for data fetching due to its simplicity and efficiency, while still allowing flexibility for the use of Redux Toolkit for state management.
 
 **PROJECT REQUIREMENTS**
 
 
-**Product Catalog**
+**Firebase Setup**
 
-*Product Listing and Display:*
-- Use React Query to retrieve all of the products in the store and display them on the Home component.
-- Show the title, price, category, description, rate, and image.
-- Each product should have a button that will allow the user to add it to the shopping cart
+*Set Up Firebase in Your Project:*
+- Create a Firebase project in the Firebase console.
+- Add your E-commerce app to the Firebase project.
+- Configure Firebase SDK in your project.
+- Enable Firebase Authentication and Firestore in the Firebase console.
 
-*Category Navigation:*
-- Provide a select drop down that allows users to select a product category
-  - NOTE: FakeStoreAPI has an endpoint that will give you an array of all the product categories
-  - Use React Query to request that endpoint to populate your select dropdown.
-  - The dropdown should not be hard coded, it should dynamically pull the values from the API
-- When the user selects a different category from the dropdown, only display the products from that category.
-  - NOTE: The FakeStoreAPI has an endpoint that allows you to get products of a specific category.  Make sure to use React Query to make the request to this endpoint.  
 
-**Shopping Cart**
+**Firebase Authentication**
 
-*State Management with Redux Toolkit:*
-- Utilize Redux Toolkit for managing the shopping cart state, including adding, updating, and removing products from the cart.
-- Define reducers and actions to handle cart-related state changes and interactions with the FakeStoreAPI.
+*Implement User Registration:*
+- Allow new users to register with their email and password using Firebase Authentication.
+- Upon registration, create a corresponding user document in the users collection in Firestore
 
-*Shopping Cart Component*
-- Create a Shopping Cart component where users can view and manage the products within their cart.
-- Display a list of products currently added to the cart including the title, image, count, and price of each product.
-- Each product should have a button that removes it from the cart
-  - REMEMBER: Users should be able to add products to the shopping cart directly from the home product listing page.
- 
-*Session Storage for Shopping Cart*
-- Store, retrieve, and update the shopping cart data in sessionStorage to ensure persistence across different components and browser sessions.
-- Store the shopping cart as an array of product objects
+*Implement Login and Logout*
+- Authenticate users with Firebase Authentication (email/password).
+- Add a logout button that signs users out.
 
-*Total Amount and Price Calculation:*
-- In the shopping cart component, display the total number of products in the cart
-- Display the total price of all the products in the cart.
-- Update these values dynamically as users modify the contents of their cart, ensuring accuracy and real-time feedback.
 
-*Checkout Functionality:*
-- Implement a checkout feature allowing users to complete their purchases.
-- FakeStoreAPI does not have a way to process orders so this feature should simulate a checkout by clearing the Redux state and sessionStorage
-- Provide visual feedback to users upon successful checkout, indicating that their cart has been cleared.
+**User Management**
 
+*Migrate CRUD Operations to Firestore*
+- Replace any existing CRUD operations for users with Firestore operations.
+- Operations to implement:
+  - Create: Add a user document when a new user registers.
+  - Read: Fetch user data to display their profile.
+  - Update: Allow users to edit their profile information (e.g., name, address).
+  - Delete: Let users delete their account and remove their data from Firestore.
+
+
+  **Product Management**
+
+*Replace FakeStore API:*
+- Create a products collection in Firestore to store product data.
+
+*CRUD Operations for Products:*
+- Like before, the user should be able to fetch all existing products.  But now, they will be pulling from the data in Firestore
+- Inside the app a user should be able to Create, Update, and Delete existing products
+
+
+  **Order Management**
+*Create Orders*
+- When users place their orders in their cart, store that order in Firebase.  The order should include all products in the order as well as the user who placed the order
+
+*Create Orders*
+- Allow users to access a list of their previous carts, serving as a history of their orders.
+- Fetch the list of user carts from the backend API endpoint.
+- Display each cart entry with details such as the cart ID, date of creation, and the total price of the order.
+- Enable users to click on individual orders to view the full details, including the list of products and the total price of the order.
