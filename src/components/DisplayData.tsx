@@ -13,13 +13,11 @@ const DisplayData = () => {
   const [newAge, setNewAge] = useState<string>('');
   const [newName, setNewName] = useState<string>('');
 
-  // updateUser Function
   const updateUser = async (userId: string, updatedData: Partial<User>) => {
     const userDoc = doc(db, 'users', userId);
     await updateDoc(userDoc, updatedData);
   };
 
-  // deleteUser Function
   const deleteUser = async (userId: string) => {
     await deleteDoc(doc(db, 'users', userId));
   };

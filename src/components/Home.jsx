@@ -32,7 +32,6 @@ function Home() {
         let q;
         const productsCollection = collection(db, 'products');
         if (selectedCategory) {
-            // Normalize category to lowercase for comparison
             q = query(productsCollection, where('category', '==', selectedCategory.toLowerCase()));
         } else {
             q = query(productsCollection);
@@ -53,7 +52,7 @@ function Home() {
 
     return (
         <div style={divStyles}>
-            <h1 className="my-5 display-3">Mini Project: E-Commerce API</h1>
+            <h1 className="my-5 display-3">Implement Firebase into React E-Commerce App</h1>
             <p className="lead">Completed by Lauren Farrell</p>
 
             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>

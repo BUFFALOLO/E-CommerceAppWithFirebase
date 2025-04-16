@@ -25,7 +25,7 @@ function CreateCustomerForm() {
         long: ""
       }
     },
-    phone: "1-570-236-7033" // Fake Store API requires phone but doesn't validate format
+    phone: "1-570-236-7033" 
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

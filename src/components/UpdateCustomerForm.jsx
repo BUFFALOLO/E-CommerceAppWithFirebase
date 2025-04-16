@@ -28,7 +28,6 @@ function UpdateCustomerForm() {
     },
     phone: "1-570-236-7033"
   });
-  // const [customers, setCustomers] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 

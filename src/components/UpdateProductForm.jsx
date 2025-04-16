@@ -13,7 +13,6 @@ function UpdateProductForm() {
     title: "", 
     price: "", 
     description: "",
-    image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     category: "electronics"
   });
   const [error, setError] = useState("");
@@ -30,7 +29,6 @@ function UpdateProductForm() {
             title: data.title || "",
             price: data.price ? data.price.toString() : "",
             description: data.description || "",
-            image: data.image || "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
             category: data.category || "electronics"
           });
           setError("");
@@ -82,7 +80,6 @@ function UpdateProductForm() {
         title: "", 
         price: "", 
         description: "",
-        image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
         category: "electronics"
       }); 
       setSuccess("Product updated successfully!");

@@ -7,7 +7,7 @@ export const store = configureStore({
   }
 });
 
-// Subscribe to store updates to save cart state to sessionStorage
+
 store.subscribe(() => {
   try {
     const state = store.getState();

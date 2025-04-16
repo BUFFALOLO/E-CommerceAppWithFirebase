@@ -41,7 +41,6 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  // Update user profile in Firestore and state
   const updateUserProfile = async (updatedData) => {
     if (!currentUser) throw new Error('No user logged in');
     const userDocRef = doc(db, 'users', currentUser.uid);
@@ -49,7 +48,6 @@ export function AuthProvider({ children }) {
     setUserProfile((prev) => ({ ...prev, ...updatedData }));
   };
 
-  // Delete user profile document from Firestore
   const deleteUserProfile = async () => {
     if (!currentUser) throw new Error('No user logged in');
     const userDocRef = doc(db, 'users', currentUser.uid);
@@ -57,7 +55,6 @@ export function AuthProvider({ children }) {
     setUserProfile(null);
   };
 
-  // Delete user account from Firebase Auth and Firestore
   const deleteUserAccount = async () => {
     if (!currentUser) throw new Error('No user logged in');
     await deleteUserProfile();
