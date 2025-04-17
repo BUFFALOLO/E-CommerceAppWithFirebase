@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 
-function ShoppingCart() {
+function ShoppingCart() { 
   const dispatch = useDispatch();
   const items = useSelector(state => state.cart.items);
   const total = useSelector(state => 
@@ -149,7 +149,7 @@ function ShoppingCart() {
             <h4>Total: ${total.toFixed(2)}</h4>
             <div className="mt-3">
               <Button variant="success" className="me-2" onClick={handleCheckout}>
-                Proceed to Checkout
+                Place Order
               </Button>
               <Button 
                 variant="outline-danger" 
