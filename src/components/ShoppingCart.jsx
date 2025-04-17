@@ -56,6 +56,8 @@ function ShoppingCart() {
       status: 'pending',
     };
 
+    console.log("Order object:", order); // Log the order object for debugging
+
     const ordersCollection = collection(db, 'orders');
     const docRef = await addDoc(ordersCollection, order);
     return docRef.id;

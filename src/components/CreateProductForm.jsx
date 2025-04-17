@@ -7,10 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProductForm() {
   const [validated, setValidated] = useState(false);
-    const [newProduct, setNewProduct] = useState({
+  const [newProduct, setNewProduct] = useState({
     title: "", 
     price: "", 
     description: "",
+    image: "", // Added image field
     category: "electronics"
   });
   const [error, setError] = useState("");
@@ -45,21 +46,22 @@ function ProductForm() {
         title: newProduct.title,
         price: parseFloat(newProduct.price),
         description: newProduct.description,
-        image: newProduct.image,
+        image: newProduct.image || null, // Handle undefined value
         category: newProduct.category
       });
       setNewProduct({ 
         title: "", 
         price: "", 
         description: "",
+        image: "", // Reset image field
         category: "electronics"
       }); 
       setSuccess("Product created successfully!");
       setError("");
       setValidated(false);
     } catch (error) {
-      console.error("Error creating product:", error.message);
-      setError("Error creating product. Please try again.");
+      console.error("Error creating product:", error); // Enhanced error logging
+      setError(`Error creating product: ${error.message}`); // More detailed error message
       setSuccess("");
     }
   };
@@ -107,6 +109,17 @@ function ProductForm() {
             placeholder="Enter product description"
             name="description"
             value={newProduct.description}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-4" md="4" controlId="validationCustom03">
+          <Form.Label>Image URL</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter product image URL"
+            name="image"
+            value={newProduct.image}
             onChange={handleInputChange}
           />
         </Form.Group>
