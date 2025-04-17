@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProductForm() {
   const [validated, setValidated] = useState(false);
-  const [newProduct, setNewProduct] = useState({ 
+    const [newProduct, setNewProduct] = useState({
     title: "", 
     price: "", 
     description: "",

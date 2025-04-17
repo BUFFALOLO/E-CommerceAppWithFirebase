@@ -2,102 +2,53 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const UserProfile = () => {
-  const { currentUser, userProfile, updateUserProfile, deleteUserAccount } = useAuth();
-  const [editableProfile, setEditableProfile] = useState({
-    name: '',
-    address: '',
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const { currentUser, updateUserProfile, deleteUserAccount } = useAuth();
+  const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (userProfile) {
-      setEditableProfile({
-        name: userProfile.name || '',
-        address: userProfile.address || '',
-      });
+    if (currentUser) {
+      setDisplayName(currentUser.displayName || '');
     }
-  }, [userProfile]);
+  }, [currentUser]);
 
-  const handleChange = (e) => {
-    setEditableProfile({
-      ...editableProfile,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSave = async () => {
-    setError(null);
-    setSuccessMessage(null);
+  const handleUpdate = async () => {
     try {
-      await updateUserProfile(editableProfile);
-      setSuccessMessage('Profile updated successfully.');
-      setIsEditing(false);
+      await updateUserProfile({ displayName });
+      alert('Profile updated successfully!');
     } catch (err) {
-      setError('Failed to update profile: ' + err.message);
+      setError('Failed to update profile. Please try again.');
     }
   };
 
   const handleDeleteAccount = async () => {
-    setError(null);
-    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (window.confirm('Are you sure you want to delete your account?')) {
       try {
         await deleteUserAccount();
-        alert('Account deleted successfully.');
-        // Optionally redirect or update UI after deletion
+        alert('Account deleted successfully!');
       } catch (err) {
-        setError('Failed to delete account: ' + err.message);
+        setError('Failed to delete account. Please try again.');
       }
     }
   };
 
-  if (!currentUser) {
-    return <p>Please log in to view your profile.</p>;
-  }
-
   return (
     <div>
-      <h2>User Profile</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+      <h1>User Profile</h1>
+      {error && <p className="text-danger">{error}</p>}
+      <p>Email: {currentUser?.email}</p>
       <div>
         <label>
-          Name:
-          {isEditing ? (
-            <input
-              type="text"
-              name="name"
-              value={editableProfile.name}
-              onChange={handleChange}
-            />
-          ) : (
-            <span> {userProfile?.name || 'N/A'}</span>
-          )}
+          Display Name:
+          <input
+            type="text"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
         </label>
+        <button onClick={handleUpdate}>Update</button>
       </div>
-      <div>
-        <label>
-          Address:
-          {isEditing ? (
-            <input
-              type="text"
-              name="address"
-              value={editableProfile.address}
-              onChange={handleChange}
-            />
-          ) : (
-            <span> {userProfile?.address || 'N/A'}</span>
-          )}
-        </label>
-      </div>
-      {isEditing ? (
-        <button onClick={handleSave}>Save</button>
-      ) : (
-        <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-      )}
-      <hr />
-      <button onClick={handleDeleteAccount} style={{ color: 'red' }}>
+      <button onClick={handleDeleteAccount} className="btn btn-danger">
         Delete Account
       </button>
     </div>

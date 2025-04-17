@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectCartItems } from '../features/cart/cartSlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAuth } from '../contexts/AuthContext';
-import Logout from './Auth/Logout';
+import UserDropdown from './UserDropdown';
 
 function NavigationBar() {
   const cartItems = useSelector(selectCartItems);
@@ -15,23 +15,21 @@ function NavigationBar() {
   return (
     <Navbar expand="lg" className="navbar-custom mb-4">
       <Container>
-            <NavLink className="nav-link-custom" to="/">Home</NavLink>
-            <NavLink className="nav-link-custom" to="/ProductsMenu">Products</NavLink>
-            <NavLink className="nav-link-custom" to="/OrderProcessing">Order Processing</NavLink>
-            <NavLink className="nav-link-custom" to="/order-history">Order History</NavLink>
-            <NavLink className="nav-link-custom" to="/CustomersAndAccountsMenu">Customers and Accounts</NavLink>
-            <NavLink className="nav-link-custom" to="/cart">
-              Cart {itemCount > 0 && (
-                <span className="badge bg-primary rounded-pill ms-1">
-                  {itemCount}
-                </span>
-              )}
-            </NavLink>
-            {currentUser ? (
-              <Logout />
-            ) : (
-              null
-            )}
+        <NavLink className="nav-link-custom" to="/">Home</NavLink>
+        <NavLink className="nav-link-custom" to="/ProductsMenu">Products</NavLink>
+        <NavLink className="nav-link-custom" to="/OrderProcessing">Order Processing</NavLink>
+        <NavLink className="nav-link-custom" to="/order-history">Order History</NavLink>
+        <NavLink className="nav-link-custom" to="/CustomersAndAccountsMenu">Customers and Accounts</NavLink>
+        <NavLink className="nav-link-custom" to="/cart">
+          Cart {itemCount > 0 && (
+            <span className="badge bg-primary rounded-pill ms-1">
+              {itemCount}
+            </span>
+          )}
+        </NavLink>
+        {currentUser ? (
+          <UserDropdown />
+        ) : null}
       </Container>
     </Navbar>
   );

@@ -11,6 +11,18 @@ const Register = () => {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Validation
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;

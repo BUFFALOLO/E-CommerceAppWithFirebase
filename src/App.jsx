@@ -15,7 +15,7 @@ import { Route, Routes } from "react-router-dom";
 import CustomersAndAccountsMenu from "./components/CustomersAndAccountsMenu";
 import ShoppingCart from "./components/ShoppingCart";
 import Login from "./components/Auth/Login";
-import UserProfile from "./components/UserProfile";
+import UserProfile from "./components/UserProfile"; // Import UserProfile
 
 function App() {
   return (
