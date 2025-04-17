@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const UserProfile = () => {
-  const { currentUser, updateUserProfile, deleteUserAccount } = useAuth();
-  const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
+  const { currentUser, userProfile, updateUserProfile, deleteUserAccount } = useAuth();
+  const [displayName, setDisplayName] = useState(userProfile?.displayName || '');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (currentUser) {
-      setDisplayName(currentUser.displayName || '');
+    if (userProfile) {
+      setDisplayName(userProfile.displayName || '');
     }
-  }, [currentUser]);
+  }, [userProfile]);
 
   const handleUpdate = async () => {
     try {
@@ -36,7 +36,7 @@ const UserProfile = () => {
     <div>
       <h1>User Profile</h1>
       {error && <p className="text-danger">{error}</p>}
-      <p>Email: {currentUser?.email}</p>
+      <p>Email: {userProfile?.email}</p>
       <div>
         <label>
           Display Name:

@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase'; // Updated import path
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const UserDropdown = () => {
+const UserDropdown = ({ currentUser }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleLogout = async () => {
@@ -15,15 +15,22 @@ const UserDropdown = () => {
     }
   };
 
+  const email = currentUser?.email;
+  const displayName = currentUser?.displayName;
+
   return (
     <Dropdown onToggle={() => setShowDropdown(!showDropdown)} show={showDropdown}>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
         User
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item as={NavLink} to="/profile">Profile</Dropdown.Item> {/* Updated link */}
+        <Dropdown.Item as={NavLink} to="/profile">Profile</Dropdown.Item>
         <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
       </Dropdown.Menu>
+      <div>
+        <p>{displayName}</p>
+        <p>{email}</p>
+      </div>
     </Dropdown>
   );
 };
