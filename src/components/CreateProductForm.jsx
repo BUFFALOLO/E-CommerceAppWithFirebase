@@ -58,7 +58,7 @@ function ProductForm() {
       setError("");
       setValidated(false);
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error creating product:", error.message);
       setError("Error creating product. Please try again.");
       setSuccess("");
     }

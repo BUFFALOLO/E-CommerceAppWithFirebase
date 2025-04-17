@@ -86,7 +86,7 @@ function UpdateProductForm() {
       setError("");
       setValidated(false);
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating product:", error.message);
       setError("Error updating product. Please try again.");
       setSuccess("");
     }

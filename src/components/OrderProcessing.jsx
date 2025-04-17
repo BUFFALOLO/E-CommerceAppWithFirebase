@@ -34,7 +34,13 @@ function OrderProcessing() {
     }
 
     try {
-      await addDoc(collection(db, 'orders'), {
+      console.log('Placing order with the following details:', { 
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        items: cartItems,
+        total: cartTotal,
+      });
+      const orderRef = await addDoc(collection(db, 'orders'), {
         userId: currentUser.uid,
         userEmail: currentUser.email,
         items: cartItems,
@@ -46,6 +52,12 @@ function OrderProcessing() {
       setValidated(false);
     } catch (err) {
       console.error('Error placing order:', err);
+      console.error('Order details:', {
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        items: cartItems,
+        total: cartTotal,
+      });
       setError('Failed to place order. Please try again.');
     }
   };
