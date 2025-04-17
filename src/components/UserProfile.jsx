@@ -37,6 +37,7 @@ const UserProfile = () => {
       <h1>User Profile</h1>
       {error && <p className="text-danger">{error}</p>}
       <p>Email: {userProfile?.email}</p>
+<p>Display Name: {userProfile?.displayName}</p>
       <div>
         <label>
           Display Name:
