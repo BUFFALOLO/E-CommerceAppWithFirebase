@@ -37,7 +37,7 @@ function OrderHistory() {
         setOrders(fetchedOrders);
       } catch (err) {
         console.error('Error fetching orders:', err);
-        setError('Failed to load order history.');
+        setError(`Failed to load order history: ${err.message || 'Please try again.'}`);
       } finally {
         setLoading(false);
       }

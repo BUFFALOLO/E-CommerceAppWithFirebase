@@ -58,7 +58,7 @@ function OrderProcessing() {
         items: cartItems,
         total: cartTotal,
       });
-      setError('Failed to place order. Please try again.');
+      setError(`Failed to place order: ${err.message || 'Please try again.'}`);
     }
   };
 
