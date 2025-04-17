@@ -7,11 +7,11 @@ import { useAuth } from '../contexts/AuthContext';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 
-function ShoppingCart() { 
+function ShoppingCart() {
   const dispatch = useDispatch();
   const items = useSelector(state => state.cart.items);
-  const total = useSelector(state => 
-    state.cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  const total = useSelector(state =>
+    state.cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   );
   const totalQuantity = useSelector(state =>
     state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
@@ -32,10 +32,22 @@ function ShoppingCart() {
     }
   };
 
+  const validateOrder = (order) => {
+    if (!order.userId || !order.userEmail || !order.products || order.products.length === 0) {
+      throw new Error('Order must have a user ID, user email, and at least one product.');
+    }
+    order.products.forEach(product => {
+      if (!product.id || !product.title || !product.price || !product.quantity) {
+        throw new Error('Each product must have an ID, title, price, and quantity.');
+      }
+    });
+  };
+
   const createOrder = async () => {
     if (!currentUser) {
       throw new Error('User must be logged in to place an order.');
     }
+
     if (items.length === 0) {
       throw new Error('Cart is empty.');
     }
@@ -56,7 +68,9 @@ function ShoppingCart() {
       status: 'pending',
     };
 
-    console.log("Order object:", order); // Log the order object for debugging
+    console.log("Order object:", order);
+
+    validateOrder(order);
 
     const ordersCollection = collection(db, 'orders');
     const docRef = await addDoc(ordersCollection, order);
@@ -112,9 +126,9 @@ function ShoppingCart() {
                 <tr key={item.id}>
                   <td>
                     <div className="d-flex align-items-center">
-                      <img 
-                        src={item.image} 
-                        alt={item.title} 
+                      <img
+                        src={item.image}
+                        alt={item.title}
                         style={{ width: '50px', marginRight: '10px' }}
                       />
                       {item.title}
@@ -132,8 +146,8 @@ function ShoppingCart() {
                   </td>
                   <td>${(item.price * item.quantity).toFixed(2)}</td>
                   <td>
-                    <Button 
-                      variant="danger" 
+                    <Button
+                      variant="danger"
                       size="sm"
                       onClick={() => handleRemove(item.id)}
                     >
@@ -151,8 +165,8 @@ function ShoppingCart() {
               <Button variant="success" className="me-2" onClick={handleCheckout}>
                 Place Order
               </Button>
-              <Button 
-                variant="outline-danger" 
+              <Button
+                variant="outline-danger"
                 onClick={() => dispatch(clearCart())}
               >
                 Clear Cart
