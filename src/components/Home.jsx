@@ -111,7 +111,14 @@ function Home() {
                                         <Button 
                                             variant="primary" 
                                             className="mt-3"
-                                            onClick={() => dispatch(addItem(product))}
+                                            onClick={() => dispatch(addItem({
+                                                id: product.id,
+                                                title: product.title,
+                                                price: product.price,
+                                                image: product.imageURL,
+                                                category: product.category,
+                                                description: product.description
+                                            }))}
                                         >
                                             Add to Cart
                                         </Button>
