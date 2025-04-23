@@ -1,7 +1,7 @@
 import Home from "./components/Home";
 import NavigationBar from "./components/NavBar";
 import ProductsMenu from "./components/ProductsMenu";
-import OrderProcessing from "./components/OrderProcessing";
+// Removed import of OrderProcessing
 import OrderHistory from "./components/OrderHistory";
 import CustomerForm from "./components/CreateCustomerForm";
 import UpdateCustomerForm from "./components/UpdateCustomerForm";
@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/ProductsMenu/" element={<ProductsMenu />}/>
-        <Route path="/OrderProcessing" element={<OrderProcessing />}/>
+        {/* Removed route for OrderProcessing */}
         <Route path="/order-history" element={<OrderHistory />} />
         <Route path="/CustomersAndAccountsMenu/" element={<CustomersAndAccountsMenu />}/>
         <Route path="/CreateCustomerForm" element={<CustomerForm />}/>

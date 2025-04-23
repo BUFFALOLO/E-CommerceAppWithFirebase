@@ -17,7 +17,7 @@ function NavigationBar() {
       <Container>
         <NavLink className="nav-link-custom" to="/">Home</NavLink>
         <NavLink className="nav-link-custom" to="/ProductsMenu">Products</NavLink>
-        <NavLink className="nav-link-custom" to="/OrderProcessing">Order Processing</NavLink>
+        {/* Removed Order Processing NavLink */}
         <NavLink className="nav-link-custom" to="/order-history">Order History</NavLink>
         <NavLink className="nav-link-custom" to="/CustomersAndAccountsMenu">Customers and Accounts</NavLink>
         <NavLink className="nav-link-custom" to="/cart">
