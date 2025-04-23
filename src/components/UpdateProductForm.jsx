@@ -13,7 +13,8 @@ function UpdateProductForm() {
     title: "", 
     price: "", 
     description: "",
-    category: "electronics"
+    category: "electronics",
+    image: ""
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -29,7 +30,8 @@ function UpdateProductForm() {
             title: data.title || "",
             price: data.price ? data.price.toString() : "",
             description: data.description || "",
-            category: data.category || "electronics"
+            category: data.category || "electronics",
+            image: data.image || ""
           });
           setError("");
         } else {
@@ -80,7 +82,8 @@ function UpdateProductForm() {
         title: "", 
         price: "", 
         description: "",
-        category: "electronics"
+        category: "electronics",
+        image: ""
       }); 
       setSuccess("Product updated successfully!");
       setError("");
@@ -135,6 +138,17 @@ function UpdateProductForm() {
             placeholder="Enter product description"
             name="description"
             value={newProduct.description}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-4" md="4" controlId="validationCustom03">
+          <Form.Label>Image URL</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter image URL"
+            name="image"
+            value={newProduct.image}
             onChange={handleInputChange}
           />
         </Form.Group>
