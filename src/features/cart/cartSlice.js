@@ -6,7 +6,16 @@ const loadCartFromSessionStorage = () => {
     if (serializedCart === null) {
       return { items: [] };
     }
-    return JSON.parse(serializedCart);
+    const parsedCart = JSON.parse(serializedCart);
+    // Filter out invalid items missing id, title, or price
+    if (parsedCart.items && Array.isArray(parsedCart.items)) {
+      parsedCart.items = parsedCart.items.filter(item =>
+        item.id && item.title && typeof item.price === 'number'
+      );
+    } else {
+      parsedCart.items = [];
+    }
+    return parsedCart;
   } catch (e) {
     console.warn('Failed to load cart from sessionStorage:', e);
     return { items: [] };
@@ -20,13 +29,19 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
+      const payload = action.payload;
+      // Validate payload has id, title, and price
+      if (!payload.id || !payload.title || typeof payload.price !== 'number') {
+        console.warn('Invalid product payload for addItem:', payload);
+        return;
+      }
       const existingItem = state.items.find(
-        item => item.id === action.payload.id
+        item => item.id === payload.id
       );
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({ ...payload, quantity: 1 });
       }
     },
     removeItem: (state, action) => {
